@@ -10,6 +10,7 @@ import 'package:weatherapp/components/footer_component.dart';
 
 import 'package:weatherapp/components/forecast_hours_component.dart';
 import 'package:weatherapp/components/forecast_rainy_chart.dart';
+import 'package:weatherapp/components/info_component.dart';
 import 'package:weatherapp/components/info_temperature.dart';
 import 'package:weatherapp/components/lottie_error.dart';
 import 'package:weatherapp/components/lottie_loading.dart';
@@ -58,7 +59,7 @@ class MyHomePage extends HookConsumerWidget {
               color: (currentTheme["primaryFontColor"] as Color),
               size: 30,
             ),
-            tooltip: 'Show Options',
+            tooltip: 'Ver opciones',
             onPressed: () {
               showMenu();
             },
@@ -86,7 +87,7 @@ class MyHomePage extends HookConsumerWidget {
       );
     }
 
-    Widget generateTemperaturaAnimation(data) {
+    Widget generateTemperaturaAnimation(TidesWeatherModel data) {
       return Padding(
           padding: const EdgeInsets.only(left: 20, right: 10, top: 40),
           child: Row(
@@ -103,7 +104,7 @@ class MyHomePage extends HookConsumerWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: currentTheme["temperatureFont"] as Color,
-                      fontSize: 80,
+                      fontSize: 65,
                     ),
                   ),
                   Text(
@@ -116,6 +117,16 @@ class MyHomePage extends HookConsumerWidget {
                       fontSize: 18,
                     ),
                   ),
+                  const SizedBox(
+                    height: 45,
+                  ),
+                  Text(
+                    'Sensación Térmica de ${data.currentWeather.realFeelTemperature.metric.value.toInt()}°',
+                    style: TextStyle(
+                      color: currentTheme["primaryFontColor"] as Color,
+                      fontSize: 14,
+                    ),
+                  )
                 ],
               )),
               Lottie.asset("assets/lottie/person_walking.json", repeat: true, width: 160)
@@ -233,13 +244,14 @@ class MyHomePage extends HookConsumerWidget {
                               ],
                             )),
                       ),
+                      InfoComponent(currentWeather: data.currentWeather),
                     ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: SmoothPageIndicator(
                       controller: pageController,
-                      count: 3, //Array length
+                      count: 4, //Array length
                       effect: const ExpandingDotsEffect(
                         activeDotColor: Colors.blue,
                         dotColor: Colors.grey,
@@ -284,7 +296,8 @@ class MyHomePage extends HookConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: data.next5daysForecast.dailyForecasts.asMap().entries.map((entry) {
-                    int index = entry.key;
+                    bool firstPosition = entry.key == 0;
+                    bool forecastFullData = data.next5daysForecast.dailyForecasts.length == 6;
                     DailyForecasts e = entry.value;
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -292,37 +305,48 @@ class MyHomePage extends HookConsumerWidget {
                       children: [
                         Row(
                           children: [
-                            Text(dayEnglishToSpanish(getCurrentDateFromEpochTime(e.epochDate, format: "EEEE")),
+                            Text(
+                                forecastFullData && firstPosition
+                                    ? "Ayer"
+                                    : !forecastFullData && firstPosition
+                                        ? "Hoy"
+                                        : forecastFullData && entry.key == 1
+                                            ? "Hoy"
+                                            : dayEnglishToSpanish(getCurrentDateFromEpochTime(e.epochDate, format: "EEEE")),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w800,
-                                  color: (index != 0 ? currentTheme["temperatureFont"] : currentTheme["percentOfPrecipitation"]) as Color,
+                                  color: (!firstPosition ? currentTheme["temperatureFont"] : currentTheme["percentOfPrecipitation"]) as Color,
                                   fontSize: 14,
                                 )),
                             const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 20),
-                              child: Image.asset(
-                                getIconsByWeatherAndHour(true, e.day.icon),
-                                width: 40,
-                              ),
-                            ),
-                            Image.asset(
-                              getIconsByWeatherAndHour(false, e.night.icon),
-                              width: 40,
-                            ),
+                            forecastFullData && firstPosition
+                                ? const SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 10, right: 20),
+                                    child: Image.asset(
+                                      getIconsByWeatherAndHour(true, e.day.icon),
+                                      width: 40,
+                                    ),
+                                  ),
+                            forecastFullData && firstPosition
+                                ? const SizedBox()
+                                : Image.asset(
+                                    getIconsByWeatherAndHour(false, e.night.icon),
+                                    width: 40,
+                                  ),
                             Padding(
                               padding: const EdgeInsets.only(left: 30, right: 10),
                               child: Text("${e.temperature.maximum.value.toInt()}°",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w800,
-                                    color: (index != 0 ? currentTheme["temperatureFont"] : currentTheme["percentOfPrecipitation"]) as Color,
+                                    color: (!firstPosition ? currentTheme["temperatureFont"] : currentTheme["percentOfPrecipitation"]) as Color,
                                     fontSize: 15,
                                   )),
                             ),
                             Text("${e.temperature.minimum.value.toInt()}°",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w800,
-                                  color: (index != 0 ? currentTheme["temperatureFont"] : currentTheme["percentOfPrecipitation"]) as Color,
+                                  color: (!firstPosition ? currentTheme["temperatureFont"] : currentTheme["percentOfPrecipitation"]) as Color,
                                   fontSize: 15,
                                 )),
                           ],

@@ -41,13 +41,15 @@ class ElevationModel {
 }
 
 class UnitMeasurementModel {
-  UnitMeasurementModel({required this.value, required this.unit, required this.unytType});
+  UnitMeasurementModel({required this.value, required this.unit, required this.unytType, required this.phrase});
 
   factory UnitMeasurementModel.fromJson(Map<String, dynamic> json) {
-    return UnitMeasurementModel(value: json['Value'] + 0.0, unit: json['Unit'] as String, unytType: json['UnitType'] as int);
+    return UnitMeasurementModel(
+        value: json['Value'] + 0.0, unit: json['Unit'] as String, unytType: json['UnitType'] as int, phrase: json["Phrase"] ?? "");
   }
 
   final double value;
   final String unit;
   final int unytType;
+  final String phrase;
 }

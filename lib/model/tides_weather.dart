@@ -68,7 +68,17 @@ class CurrentWeatherModel {
       required this.hasPrecipitation,
       required this.id,
       required this.temperature,
-      required this.isDayTime});
+      required this.isDayTime,
+      required this.realFeelTemperature,
+      required this.realFeelTemperatureShade,
+      required this.relativeHumidity,
+      required this.dewPoint,
+      required this.windGust,
+      required this.uvIndex,
+      required this.uvIndexText,
+      required this.visibility,
+      required this.cloudCover,
+      required this.pressure});
 
   factory CurrentWeatherModel.fromJson(Map<String, dynamic> json) {
     return CurrentWeatherModel(
@@ -79,7 +89,17 @@ class CurrentWeatherModel {
         hasPrecipitation: json["hasPrecipitation"] as bool,
         id: json["id"],
         temperature: TemperatureModel.fromJson(json["temperature"]),
-        isDayTime: json["isDayTime"] as bool);
+        isDayTime: json["isDayTime"] as bool,
+        realFeelTemperature: RealFeelTemperature.fromJson(json["realFeelTemperature"]),
+        realFeelTemperatureShade: RealFeelTemperature.fromJson(json["realFeelTemperatureShade"]),
+        relativeHumidity: json["relativeHumidity"] as int,
+        dewPoint: DewPoint.fromJson(json["dewPoint"]),
+        windGust: WindGust.fromJson(json["windGust"]),
+        uvIndex: json["uvIndex"] as int,
+        uvIndexText: json["uvIndexText"] as String,
+        visibility: Visibility.fromJson(json["visibility"]),
+        cloudCover: json["cloudCover"] as int,
+        pressure: Pressure.fromJson(json["pressure"]));
   }
 
   final String weatherText;
@@ -90,6 +110,16 @@ class CurrentWeatherModel {
   final String id;
   final TemperatureModel temperature;
   final bool isDayTime;
+  final RealFeelTemperature realFeelTemperature;
+  final RealFeelTemperature realFeelTemperatureShade;
+  final int relativeHumidity;
+  final DewPoint dewPoint;
+  final WindGust windGust;
+  final int uvIndex;
+  final String uvIndexText;
+  final Visibility visibility;
+  final int cloudCover;
+  final Pressure pressure;
 }
 
 class TemperatureModel {
@@ -219,4 +249,69 @@ class Headline {
   final String text;
   final String endDate;
   final String effectiveDate;
+}
+
+class RealFeelTemperature {
+  RealFeelTemperature({required this.metric, required this.imperial});
+
+  factory RealFeelTemperature.fromJson(Map<String, dynamic> json) {
+    return RealFeelTemperature(metric: UnitMeasurementModel.fromJson(json["Metric"]), imperial: UnitMeasurementModel.fromJson(json["Imperial"]));
+  }
+
+  final UnitMeasurementModel metric;
+  final UnitMeasurementModel imperial;
+}
+
+class DewPoint {
+  DewPoint({required this.metric, required this.imperial});
+
+  factory DewPoint.fromJson(Map<String, dynamic> json) {
+    return DewPoint(metric: UnitMeasurementModel.fromJson(json["Metric"]), imperial: UnitMeasurementModel.fromJson(json["Imperial"]));
+  }
+
+  final UnitMeasurementModel metric;
+  final UnitMeasurementModel imperial;
+}
+
+class WindGust {
+  WindGust({required this.speed});
+
+  factory WindGust.fromJson(Map<String, dynamic> json) {
+    return WindGust(speed: Speed.fromJson(json["Speed"]));
+  }
+
+  final Speed speed;
+}
+
+class Speed {
+  Speed({required this.metric, required this.imperial});
+
+  factory Speed.fromJson(Map<String, dynamic> json) {
+    return Speed(metric: UnitMeasurementModel.fromJson(json["Metric"]), imperial: UnitMeasurementModel.fromJson(json["Imperial"]));
+  }
+
+  final UnitMeasurementModel metric;
+  final UnitMeasurementModel imperial;
+}
+
+class Visibility {
+  Visibility({required this.metric, required this.imperial});
+
+  factory Visibility.fromJson(Map<String, dynamic> json) {
+    return Visibility(metric: UnitMeasurementModel.fromJson(json["Metric"]), imperial: UnitMeasurementModel.fromJson(json["Imperial"]));
+  }
+
+  final UnitMeasurementModel metric;
+  final UnitMeasurementModel imperial;
+}
+
+class Pressure {
+  Pressure({required this.metric, required this.imperial});
+
+  factory Pressure.fromJson(Map<String, dynamic> json) {
+    return Pressure(metric: UnitMeasurementModel.fromJson(json["Metric"]), imperial: UnitMeasurementModel.fromJson(json["Imperial"]));
+  }
+
+  final UnitMeasurementModel metric;
+  final UnitMeasurementModel imperial;
 }
