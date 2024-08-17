@@ -14,3 +14,8 @@ dart run flutter_native_splash:create
 `
 dart run flutter_launcher_icons
 `
+
+- For apk generate in windows
+  `
+  flutter build apk --debug
+  `

@@ -10,6 +10,7 @@ import 'package:weatherapp/components/footer_component.dart';
 
 import 'package:weatherapp/components/forecast_hours_component.dart';
 import 'package:weatherapp/components/forecast_rainy_chart.dart';
+import 'package:weatherapp/components/info_card_component.dart';
 import 'package:weatherapp/components/info_component.dart';
 import 'package:weatherapp/components/info_temperature.dart';
 import 'package:weatherapp/components/lottie_error.dart';
@@ -244,7 +245,11 @@ class MyHomePage extends HookConsumerWidget {
                               ],
                             )),
                       ),
-                      InfoComponent(currentWeather: data.currentWeather),
+                      Center(
+                          child: Padding(
+                        padding: const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 20),
+                        child: InfoComponent(currentWeather: data.currentWeather),
+                      ))
                     ],
                   ),
                   Padding(
@@ -358,6 +363,61 @@ class MyHomePage extends HookConsumerWidget {
       );
     }
 
+    Widget generateWidgetsInfo(CurrentWeatherModel currentWeather) {
+      return Column(
+        children: [
+          Row(
+            children: [
+              InfoCardComponent(
+                icon: Icons.sunny,
+                name: "Indice UV",
+                value: currentWeather.uvIndexText,
+                unitType: "",
+              ),
+              InfoCardComponent(
+                icon: Icons.water_drop,
+                name: "Humedad",
+                value: "${currentWeather.relativeHumidity}",
+                unitType: " %",
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              InfoCardComponent(
+                icon: Icons.air_rounded,
+                name: "Viento",
+                value: "${currentWeather.windGust.speed.metric.value}",
+                unitType: currentWeather.windGust.speed.metric.unit,
+              ),
+              InfoCardComponent(
+                icon: Icons.water_drop,
+                name: "Punto de rocio",
+                value: "${currentWeather.dewPoint.metric.value}",
+                unitType: "°",
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              InfoCardComponent(
+                icon: Icons.compare_arrows,
+                name: "Presión",
+                value: "${currentWeather.pressure.metric.value}",
+                unitType: currentWeather.pressure.metric.unit,
+              ),
+              InfoCardComponent(
+                icon: Icons.remove_red_eye,
+                name: "Visibilidad",
+                value: "${currentWeather.visibility.metric.value}",
+                unitType: currentWeather.visibility.metric.unit,
+              ),
+            ],
+          )
+        ],
+      );
+    }
+
     return Scaffold(
         body: Container(
       decoration: BoxDecoration(
@@ -401,6 +461,7 @@ class MyHomePage extends HookConsumerWidget {
                       generateCurrentWeather(data),
                       generateTemperatureMessage(data),
                       generateWidgetOfDays(data),
+                      generateWidgetsInfo(data.currentWeather),
                       FooterComponent(epochTime: data.currentWeather.epochTime, url: data.next12HourForecast[0].link)
                     ],
                   )),
