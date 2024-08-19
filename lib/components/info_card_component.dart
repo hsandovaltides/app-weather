@@ -63,7 +63,7 @@ class InfoCardComponent extends HookConsumerWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Text("$value $unitType",
+                Text("$value$unitType",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       color: currentTheme["temperatureFont"] as Color,

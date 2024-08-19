@@ -378,7 +378,7 @@ class MyHomePage extends HookConsumerWidget {
                 icon: Icons.water_drop,
                 name: "Humedad",
                 value: "${currentWeather.relativeHumidity}",
-                unitType: " %",
+                unitType: "%",
               ),
             ],
           ),
@@ -388,7 +388,7 @@ class MyHomePage extends HookConsumerWidget {
                 icon: Icons.air_rounded,
                 name: "Viento",
                 value: "${currentWeather.windGust.speed.metric.value}",
-                unitType: currentWeather.windGust.speed.metric.unit,
+                unitType: " ${currentWeather.windGust.speed.metric.unit}",
               ),
               InfoCardComponent(
                 icon: Icons.water_drop,
@@ -404,13 +404,13 @@ class MyHomePage extends HookConsumerWidget {
                 icon: Icons.compare_arrows,
                 name: "Presión",
                 value: "${currentWeather.pressure.metric.value}",
-                unitType: currentWeather.pressure.metric.unit,
+                unitType: " ${currentWeather.pressure.metric.unit}",
               ),
               InfoCardComponent(
                 icon: Icons.remove_red_eye,
                 name: "Visibilidad",
                 value: "${currentWeather.visibility.metric.value}",
-                unitType: currentWeather.visibility.metric.unit,
+                unitType: " ${currentWeather.visibility.metric.unit}",
               ),
             ],
           )

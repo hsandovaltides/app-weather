@@ -85,7 +85,7 @@ class CurrentTemperatureComponent extends HookConsumerWidget {
                       ),
                       const Spacer(),
                       Text(
-                        "${getDiffTemperature(data).abs()}°",
+                        "${getDiffTemperature(data)}°",
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: currentTheme["temperatureFont"] as Color,
