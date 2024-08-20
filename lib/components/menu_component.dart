@@ -53,12 +53,7 @@ class MenuComponent extends HookConsumerWidget {
             Divider(thickness: 2, color: currentTheme["primaryFontColor"] as Color),
             Row(
               children: [
-                Text("Tema Actual:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      color: currentTheme["primaryFontColor"] as Color,
-                      fontSize: 14,
-                    )),
+                const Text("Tema Actual:", style: fontTitleBottomSheetDetails),
                 IconButton(
                   icon: Icon(
                     color: themeMode == ThemeMode.dark ? Colors.yellow : Colors.white,
